@@ -1,0 +1,169 @@
+{% extends "base/base.html" %}
+
+{% load pagination_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block conteudo %}
+
+<section class="slider-area slider-area2">
+    <div class="slider-active">
+        <!-- Single Slider -->
+        <div class="single-slider slider-height2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-8 col-lg-11 col-md-12">
+                        <div class="hero__caption hero__caption2">
+                            <h1 data-animation="bounceIn" data-delay="0.2s">Artigos</h1>
+                            <!-- breadcrumb Start-->
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="{% url 'listar_artigos' %}">Artigos</a></li> 
+                                </ol>
+                            </nav>
+                            <!-- breadcrumb End -->
+                        </div>
+                    </div>
+                </div>
+            </div>          
+        </div>
+    </div>
+</section>
+
+<section class="blog_area section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="blog_left_sidebar">
+                    <div class="form-group">
+                        <form action="" method="get">
+                            <div class="input-group-icon mt-10">
+                                <div class="icon"><i class="fa fa-t" aria-hidden="true"></i></div>
+                                <input type="text" name="titulo" placeholder="Título" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Título'" class="single-input" 
+                                value="{% if titulo is not None %}{{titulo}}{% endif %}">
+                            </div>
+                            <div class="input-group-icon mt-10">
+                                <div class="icon"><i class="fa fa-book" aria-hidden="true"></i></div>
+                                <input type="text" name="publicacao" placeholder="Publicação" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Publicação'" class="single-input" 
+                                value="{% if publicacao is not None %}{{publicacao}}{% endif %}">
+                            </div>
+                            <div class="input-group-icon mt-10">
+                                <div class="icon"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+                                <input type="number" name="ano" placeholder="Ano" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Ano'" class="single-input" 
+                                value={% if ano > 0 %}{{ano}}{% endif %}>
+                            </div>
+                            <div class="input-group-icon mt-10">
+                                <div class="icon"><i class="fa fa-key" aria-hidden="true"></i></div>
+                                <input type="text" name="palavras_chave" placeholder="Palavras-chave" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Palavras-chave'" class="single-input" 
+                                value="{% if palavras_chave is not None %}{{palavras_chave}}{% endif %}">
+                            </div>
+                            <div class="input-group-icon mt-10">
+                                <div class="icon"><i class="fa fa-align-left" aria-hidden="true"></i></div>
+                                <input type="text" name="resumo" placeholder="Resumo" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Resumo'" class="single-input" 
+                                value="{% if resumo is not None %}{{resumo}}{% endif %}">
+                            </div>
+                            <div class="input-group-icon mt-10">
+                                <div class="icon"><i class="fa fa-user" aria-hidden="true"></i></div>
+                                <input type="text" name="autores" placeholder="Autor" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Autor'" class="single-input" 
+                                value="{% if autores is not None %}{{autores}}{% endif %}">
+                            </div>
+                            <br>
+                            <input type="submit" class="btn btn-success" value="Filtrar">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 mb-5 mb-lg-0">
+                <div class="blog_right_sidebar">
+                    {% for artigo in lista_artigos %}
+                        <article class="blog_item">
+                            <div class="blog_item_img">
+                                <a href="#" class="blog_item_date">
+                                    <!-- <h3>15</h3> -->
+                                    <p>{{artigo.ano}}</p>
+                                </a>
+                            </div>
+                            <div class="blog_details">
+                                <h2 class="blog-head" style="color: #2d2d2d;">{{artigo.titulo}}</h2>
+                                <h4>
+                                    | 
+                                    {% for autor in artigo.autores.all %}
+                                        {{autor.nome}} |
+                                    {% endfor %}
+                                </h4>
+                                <p>{{artigo.resumo}}</p>
+                                <ul class="blog-info-link">
+                                    <li><i class="fa fa-book"></i> {{artigo.publicacao}}</li>
+                                    <li><a href="{{artigo.link}}"><i class="fa fa-link"></i> Link</a></li>
+                                </ul>
+                            </div>
+                        </article>
+                    {% endfor %}
+                    <nav class="blog-pagination justify-content-center d-flex">
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a href="?{% url_replace request 'page' page_obj.previous_page_number %}" class="page-link" aria-label="Previous">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <a href="" class="page-link" aria-label="Previous">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% if page_obj.number|add:'-2' > 1 %}
+                                <li class="page-item">
+                                    <a href="?{% url_replace request 'page' page_obj.number|add:'-3' %}" class="page-link">&hellip;</a>
+                                </li>
+                            {% endif %}
+                    
+                            {% for i in page_obj.paginator.page_range %}
+                                {% if page_obj.number == i %}
+                                    <li class="active page-item">
+                                        <span class="page-link">{{ i }} <span class="sr-only">(current)</span></span>
+                                    </li>
+                                {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a href="?{% url_replace request 'page' i %}" class="page-link">{{ i }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                    
+                            {% if page_obj.paginator.num_pages > page_obj.number|add:'2' %}
+                                <li class="page-item">
+                                    <a href="?{% url_replace request 'page' page_obj.number|add:'3' %}" class="page-link">&hellip;</a>
+                                </li>
+                            {% endif %}
+                    
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a href="?{% url_replace request 'page' page_obj.next_page_number %}" class="page-link" aria-label="Next">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <a href="" class="page-link" aria-label="Next">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+    </div>
+</section>
+
+{% endblock %}

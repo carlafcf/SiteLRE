@@ -20,4 +20,9 @@ from SiteLRE import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+    path('contato/', views.contato, name="contato"),
+    # path('projetos/', views.ListarProjetos.as_view(), name='listar_projetos'),
+    path('projetos/', views.ListarProjetosFiltrados.as_view(), name='listar_projetos'),
+    path('projeto/<int:pk>', views.InformacoesProjeto.as_view(), name='informacoes_projeto'),
+    path('artigos/', views.ListarArtigosFiltrados.as_view(), name='listar_artigos'),
 ]

@@ -13,8 +13,11 @@
                     <div class="col-xl-6 col-lg-7 col-md-12">
                         <div class="hero__caption">
                             <h1 data-animation="fadeInLeft" data-delay="0.2s">Laboratório de<br> Robótica Educacional</h1>
-                            <p data-animation="fadeInLeft" data-delay="0.4s">Realizando pesquisas na área de robótica educacional, com desenvolvimento de sistemas, treinamento de professores e criação de tecnologia para aplicação da robótica educacional em sala de aula.</p>
-                            <a href="#" class="btn hero-btn" data-animation="fadeInLeft" data-delay="0.7s">Entre em Contato</a>
+                            <p data-animation="fadeInLeft" data-delay="0.4s">
+                                Realizando pesquisas na área de robótica educacional, com desenvolvimento de sistemas, 
+                                treinamento de professores e criação de tecnologia para aplicação da robótica 
+                                em sala de aula. Conheça mais sobre nossos projetos!</p>
+                            <a href="#contato" class="btn hero-btn" data-animation="fadeInLeft" data-delay="0.7s">Entre em Contato</a>
                         </div>
                     </div>
                 </div>
@@ -32,19 +35,8 @@
                         <img src="{% static 'assets/img/icon/icon1.svg' %}" alt="">
                     </div>
                     <div class="features-caption">
-                        <h3>Mais de {{ lista_artigos|length }} artigos publicados</h3>
-                        <p>The automated process all your website tasks.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-8">
-                <div class="single-services mb-30">
-                    <div class="features-icon">
-                        <img src="{% static 'assets/img/icon/icon2.svg' %}" alt="">
-                    </div>
-                    <div class="features-caption">
-                        <h3>Equipe de {{ lista_pesquisadores|length }} pesquisadores</h3>
-                        <p>The automated process all your website tasks.</p>
+                        <h3>Artigos publicados: {{ lista_artigos|length }}</h3>
+                        <a href="{% url 'listar_artigos' %}"><p>Clique aqui para listar nossos artigos publicados.</p></a>
                     </div>
                 </div>
             </div>
@@ -54,8 +46,19 @@
                         <img src="{% static 'assets/img/icon/icon3.svg' %}" alt="">
                     </div>
                     <div class="features-caption">
-                        <h3>Trabalhando em {{ lista_projetos|length }} projetos</h3>
-                        <p>The automated process all your website tasks.</p>
+                        <h3>Projetos ativos: {{ lista_projetos|length }}</h3>
+                        <a href="{% url 'listar_projetos' %}"><p>Clique aqui para conhecer mais sobre nossos projetos.</p></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-8">
+                <div class="single-services mb-30">
+                    <div class="features-icon">
+                        <img src="{% static 'assets/img/icon/icon2.svg' %}" alt="">
+                    </div>
+                    <div class="features-caption">
+                        <h3>Pesquisadores: {{ lista_pesquisadores|length }}</h3>
+                        <a href="#pesquisadores"><p>Clique aqui para conhecer os pesquisadores do LRE.</p></a>
                     </div>
                 </div>
             </div>
@@ -69,6 +72,8 @@
             <div class="col-xl-7 col-lg-8">
                 <div class="section-tittle text-center mb-55">
                     <h2>Projetos em Execução</h2>
+
+        <a href="{% url 'listar_projetos' %}" class="btn hero-btn align-middle" data-animation="fadeInLeft" data-delay="0.7s">Ver todos</a>
                 </div>
             </div>
         </div>
@@ -80,8 +85,21 @@
                             <a href="#"><img src="{% static 'assets/img/gallery/featured1.png' %}" alt=""></a>
                         </div>
                         <div class="properties__caption">
-                            <p>Área do projeto</p>
                             <h3><a href="#">{{ projeto.titulo }}</a></h3>
+
+                            <div class="properties__footer">
+                                <div class="restaurant-name">
+                                    <p><span>
+                                        {% if projeto.areas_pesquisa.count > 0%}
+                                            | 
+                                        {% endif %}
+                                        {% for area in projeto.areas_pesquisa.all %}
+                                            {{ area.nome}} |
+                                        {% endfor %}
+                                    </span></p>
+                                </div>
+                            </div>
+
                             <p>{{ projeto.descricao|slice:":300" }}...</p>
                             <div class="properties__footer d-flex justify-content-between align-items-center">
                                 <div class="restaurant-name">
@@ -94,7 +112,7 @@
                                     <span>{{ projeto.participantes.count }}</span>
                                 </div> -->
                             </div>
-                            <a href="#" class="border-btn border-btn2">Saiba mais</a>
+                            <a href="{% url 'informacoes_projeto' pk=projeto.pk %}" class="border-btn border-btn2">Saiba mais</a>
                         </div>
 
                     </div>
@@ -115,9 +133,11 @@
             <div class="section-tittle section-tittle2 mb-55">
                 <div class="front-text">
                     <h2 class="">A robótica educacional no ambiente escolar</h2>
-                    <p>The automated process all your website tasks. Discover tools and 
-                        techniques to engage effectively with vulnerable children and young 
-                    people.</p>
+                    <p>Desde 2006 trabalhamos com desenvolvimento de tecnologias e metodologias para a inclusão
+                        da robótica nas escolas, como ferramenta de auxílio ao ensino do pensamento
+                        computacional e da lógica de programação, proporcionando a inclusão digital dos alunos
+                        nas escolas brasileiras.
+                    </p>
                 </div>
             </div>
             <div class="single-features">
@@ -125,7 +145,8 @@
                     <img src="{% static 'assets/img/icon/right-icon.svg' %}" alt="">
                 </div>
                 <div class="features-caption">
-                    <p>Techniques to engage effectively with vulnerable children and young people.</p>
+                    <p>Desenvolvemos softwares e kits de robótica de baixo custo
+                    </p>
                 </div>
             </div>
             <div class="single-features">
@@ -133,7 +154,7 @@
                     <img src="{% static 'assets/img/icon/right-icon.svg' %}" alt="">
                 </div>
                 <div class="features-caption">
-                    <p>Join millions of people from around the world  learning together.</p>
+                    <p>Realizamos treinamento de professores</p>
                 </div>
             </div>
 
@@ -142,7 +163,7 @@
                     <img src="{% static 'assets/img/icon/right-icon.svg' %}" alt="">
                 </div>
                 <div class="features-caption">
-                    <p>Join millions of people from around the world learning together. Online learning is as easy and natural.</p>
+                    <p>Desenvolvemos uma metodologia para criação e aplicação de aulas de robótica nas escolas</p>
                 </div>
             </div>
         </div>
@@ -152,7 +173,7 @@
                 <img src="{% static 'assets/img/gallery/about.png' %}" alt="">
 
                 <div class="video-icon" >
-                    <a class="popup-video btn-icon" href="https://www.youtube.com/watch?v=up68UAfH0d0"><i class="fas fa-play"></i></a>
+                    <a class="popup-video btn-icon" href="https://www.youtube.com/watch?v=iFccIVCAPNI"><i class="fas fa-play"></i></a>
                 </div>
             </div>
         </div>
@@ -170,109 +191,28 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="single-topic text-center mb-30">
-                    <div class="topic-img">
-                        <img src="{% static 'assets/img/gallery/topic1.png' %}" alt="">
-                        <div class="topic-content-box">
-                            <div class="topic-content">
-                                <h3><a href="#">TREINAMENTO DE PROFESSORES</a></h3>
+            {% for area in lista_areas_pesquisa %}
+                {% if lista_areas_pesquisa|length|divisibleby:4 %}
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                {% elif lista_areas_pesquisa|length|divisibleby:3 %}
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                {% elif lista_areas_pesquisa|length < 3 %}
+                <div class="col-lg-2 col-md-4 col-sm-6">
+                {% else %}
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                {% endif %}
+                    <div class="single-topic text-center mb-30">
+                        <div class="topic-img">
+                            <img src="{% static 'assets/img/gallery/topic1.png' %}" alt="">
+                            <div class="topic-content-box">
+                                <div class="topic-content">
+                                    <h3><a href="{% url 'listar_projetos' %}?areas_pesquisa={{area.nome}}">{{area.nome}}</a></h3>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="single-topic text-center mb-30">
-                    <div class="topic-img">
-                        <img src="{% static 'assets/img/gallery/topic2.png' %}" alt="">
-                        <div class="topic-content-box">
-                            <div class="topic-content">
-                                <h3><a href="#">DESENVOLVIMENTO DE HARDWARE</a></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="single-topic text-center mb-30">
-                    <div class="topic-img">
-                        <img src="{% static 'assets/img/gallery/topic3.png' %}" alt="">
-                        <div class="topic-content-box">
-                            <div class="topic-content">
-                                <h3><a href="#">DESENVOLVIMENTO DE SOFTWARE</a></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="single-topic text-center mb-30">
-                    <div class="topic-img">
-                        <img src="{% static 'assets/img/gallery/topic4.png' %}" alt="">
-                        <div class="topic-content-box">
-                            <div class="topic-content">
-                                <h3><a href="#">Programing</a></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="single-topic text-center mb-30">
-                    <div class="topic-img">
-                        <img src="{% static 'assets/img/gallery/topic5.png' %}" alt="">
-                        <div class="topic-content-box">
-                            <div class="topic-content">
-                                <h3><a href="#">Programing</a></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="single-topic text-center mb-30">
-                    <div class="topic-img">
-                        <img src="{% static 'assets/img/gallery/topic6.png' %}" alt="">
-                        <div class="topic-content-box">
-                            <div class="topic-content">
-                                <h3><a href="#">Programing</a></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="single-topic text-center mb-30">
-                    <div class="topic-img">
-                        <img src="{% static 'assets/img/gallery/topic7.png' %}" alt="">
-                        <div class="topic-content-box">
-                            <div class="topic-content">
-                                <h3><a href="#">Programing</a></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="single-topic text-center mb-30">
-                    <div class="topic-img">
-                        <img src="{% static 'assets/img/gallery/topic8.png' %}" alt="">
-                        <div class="topic-content-box">
-                            <div class="topic-content">
-                                <h3><a href="#">Programing</a></h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-xl-12">
-                <div class="section-tittle text-center mt-20">
-                    <a href="courses.html" class="border-btn">View More Subjects</a>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -290,7 +230,7 @@
             <!-- section tittle -->
             <div class="section-tittle section-tittle2 mb-20">
                 <div class="front-text">
-                    <h2 class="">Learner outcomes on courses you will take</h2>
+                    <h2 class="">Conheça mais sobre o LRE</h2>
                 </div>
             </div>
             <div class="single-features">
@@ -298,7 +238,7 @@
                     <img src="{% static 'assets/img/icon/right-icon.svg' %}" alt="">
                 </div>
                 <div class="features-caption">
-                    <p>Techniques to engage effectively with vulnerable children and young people.</p>
+                    <p>Equipe multidisciplinar formada por pesquisadores das área de computação, mecatrônica e educação</p>
                 </div>
             </div>
             <div class="single-features">
@@ -306,8 +246,7 @@
                     <img src="{% static 'assets/img/icon/right-icon.svg' %}" alt="">
                 </div>
                 <div class="features-caption">
-                    <p>Join millions of people from around the world
-                    learning together.</p>
+                    <p>Realizamos projetos de pesquisa e extensão na área de robótica educacional</p>
                 </div>
             </div>
             <div class="single-features">
@@ -315,21 +254,21 @@
                     <img src="{% static 'assets/img/icon/right-icon.svg' %}" alt="">
                 </div>
                 <div class="features-caption">
-                    <p>Join millions of people from around the world learning together.
-                    Online learning is as easy and natural.</p>
+                    <p>Criamos e desenvolvemos tecnologia para ser aplicada por amantes da robótica educacional</p>
                 </div>
             </div>
+            <a href="#contato" class="btn hero-btn" data-animation="fadeInLeft" data-delay="0.7s">Entre em Contato</a>
         </div>
     </div>
 </section>
 <!-- About Area End -->
 <!--? Team -->
-<section class="team-area section-padding40 fix">
+<section class="team-area section-padding40 fix" id="pesquisadores">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-7 col-lg-8">
                 <div class="section-tittle text-center mb-55">
-                    <h2>Professores Envolvidos</h2>
+                    <h2>Pesquisadores Envolvidos</h2>
                 </div>
             </div>
         </div>
@@ -340,7 +279,7 @@
                         <img src="{% static 'assets/img/gallery/team1.png' %}" alt="">
                     </div>
                     <div class="cat-cap">
-                        <h5><a href="services.html">
+                        <h5>
                             {% if professor.genero == '1' %}
                                 Profa. 
                                 {% if professor.titulacao == '1' %}
@@ -356,7 +295,7 @@
                                     M.e 
                                 {% endif %} 
                             {% endif %}
-                            {{ professor.nome }}</a></h5>
+                            {{ professor.nome }}</h5>
                         <p>{{ professor.descricao_pesquisador }}</p>
                     </div>
                 </div>
@@ -378,16 +317,156 @@
             <!-- section tittle -->
             <div class="section-tittle section-tittle2 mb-20">
                 <div class="front-text">
-                    <h2 class="">Take the next step
-                        toward your personal
-                        and professional goals
-                    with us.</h2>
-                    <p>The automated process all your website tasks. Discover tools and techniques to engage effectively with vulnerable children and young people.</p>
-                    <a href="#" class="btn">Join now for Free</a>
+                    <h2 class="">Deseja contribuir com nossos projetos?</h2>
+                    <p>Buscamos desenvolver tecnologia que possa ser aplicada nas salas de aula das escolas brasileiras.
+                        A criação de metodologias de ensino que envolvam robótica educacional proporciona
+                    que os alunos sejam incluídos digitalmente e conheçam o que é possível através
+                    da tecnologia.</p>
+                    <a href="#contato" class="btn">Entre em contato</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<section id="contato">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="contact-title">Entre em contato</h2>
+                <h3 id="mensagem_confirmacao_contato"></h3>
+            </div>
+            <div class="col-lg-7">
+                <form class="form-contact contact_form" action="{% url 'contato' %}" method="POST" id="form_contato">
+                <!-- <form class="form-contact contact_form" id="form_contato" method="post"> -->
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <!-- {{ form.nome }} -->
+                                <input class="form-control valid" name="nome" id="nome" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Nome completo'" placeholder="Nome completo">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <!-- {{ form.email }} -->
+                                <input class="form-control valid" name="email" id="email" type="email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'E-mail'" placeholder="E-mail">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <!-- {{ form.assunto }} -->
+                                <input class="form-control" name="assunto" id="assunto" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Assunto'" placeholder="Assunto">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <!-- {{ form.mensagem }} -->
+                                <textarea class="form-control w-100" name="mensagem" id="mensagem" cols="30" rows="9" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mensagem'" placeholder="Mensagem"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <a class="button button-contactForm boxed-btn" onclick="enviar_mensagem()">
+                            Enviar
+                        </a>
+                        <!-- <button type="submit" class="button button-contactForm boxed-btn">Enviar</button> -->
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-4 offset-lg-1">
+                <div class="media contact-info">
+                    <span class="contact-info__icon"><i class="ti-home"></i></span>
+                    <div class="media-body">
+                        <h3>Natal, RN</h3>
+                        <p>Departamento de Engenharia de Computação e Automação, UFRN</p>
+                    </div>
+                </div>
+                <div class="media contact-info">
+                    <span class="contact-info__icon"><i class="ti-tablet"></i></span>
+                    <div class="media-body">
+                        <h3>Horário de funcionamento</h3>
+                        <p>Segunda a sexta, 9h00 às 17h00</p>
+                    </div>
+                </div>
+                <div class="media contact-info">
+                    <span class="contact-info__icon"><i class="ti-email"></i></span>
+                    <div class="media-body">
+                        <h3>contato.lre.ufrn@gmail.com</h3>
+                        <p>Entre em contato a qualquer momento</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    // $("#form_contato").submit(function (e) {
+        
+    //     e.preventDefault();
+
+    //     $.ajax({
+    //         url : '{% url "contato" %}',
+    //         method : "POST",
+    //         data : { 
+    //             nome:$("#nome").val(),
+    //             email:$("#email").val(),
+    //             assunto:$("#assunto").val(),
+    //             mensagem:$("#mensagem").val(),
+    //             csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+    //          },
+    //         success: function (returndata) {
+    //             // window.location.href = '/disciplina/listar-sugestoes/0'; 
+    //         }
+    //     });
+    // });
+    function enviar_mensagem() {
+        nome = document.getElementById('nome').value;
+        email = document.getElementById('email').value;
+        assunto = document.getElementById('assunto').value;
+        mensagem = document.getElementById('mensagem').value;
+        if (nome != "") {
+            $.ajax({
+                url : '{% url "contato" %}',
+                type : "POST",
+                data : { 
+                    nome : nome,
+                    email : email,
+                    assunto : assunto,
+                    mensagem : mensagem,
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function (data) {
+                    $('#mensagem_confirmacao_contato').html(data);
+                }
+            });
+            document.getElementById('nome').value = ""
+            document.getElementById('email').value = ""
+            document.getElementById('assunto').value = ""
+            document.getElementById('mensagem').value = ""
+        }
+        };
+    // $(document).on('submit','#form_contato',function(e){
+    //     e.preventDefault();
+    //     $.ajax({
+    //         type:'POST',
+    //         url:'{% url "contato" %}',
+    //         data:
+    //         {
+    //             nome:$("#nome").val(),
+    //             email:$("#email").val(),
+    //             assunto:$("#assunto").val(),
+    //             mensagem:$("#mensagem").val(),
+    //             // csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+    //         },
+    //         // success:function(){
+    //         //     $('#mensagem_confirmacao_contato').html(data);
+    //         // }
+    //     });
+    //     document.getElementById('nome').value = ""
+    //     document.getElementById('email').value = ""
+    // });
+</script>
 
 {% endblock %}

@@ -1,0 +1,192 @@
+{% extends "base/base.html" %}
+
+{% load pagination_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block conteudo %}
+
+<!--? slider Area Start-->
+<section class="slider-area slider-area2">
+    <div class="slider-active">
+        <!-- Single Slider -->
+        <div class="single-slider slider-height2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-8 col-lg-11 col-md-12">
+                        <div class="hero__caption hero__caption2">
+                            <h1 data-animation="bounceIn" data-delay="0.2s">Projetos</h1>
+                            <!-- breadcrumb Start-->
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="{% url 'listar_projetos' %}">Projetos</a></li> 
+                                </ol>
+                            </nav>
+                            <!-- breadcrumb End -->
+                        </div>
+                    </div>
+                </div>
+            </div>          
+        </div>
+    </div>
+</section>
+<!--? Blog Area Start-->
+
+<section class="blog_area section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="blog_left_sidebar">
+                    <div class="form-group">
+                        <form action="" method="get">
+                            <div class="input-group-icon mt-10">
+                                <div class="icon"><i class="fa fa-t" aria-hidden="true"></i></div>
+                                <input type="text" name="titulo" placeholder="Título" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Título'" class="single-input"
+                                value="{% if titulo is not None %}{{titulo}}{% endif %}">
+                            </div>
+                            <div class="input-group-icon mt-10">
+                                <div class="icon"><i class="fa fa-align-left" aria-hidden="true"></i></div>
+                                <input type="text" name="descricao" placeholder="Descrição" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Descrição'" class="single-input"
+                                value="{% if descricao is not None %}{{descricao}}{% endif %}">
+                            </div>
+                            <div class="input-group-icon mt-10">
+                                <div class="icon"><i class="fa fa-user" aria-hidden="true"></i></div>
+                                <input type="text" name="participantes" placeholder="Participante" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Participante'" class="single-input"
+                                value="{% if participantes is not None %}{{participantes}}{% endif %}">
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-8">
+                                    <h3 class="mb-30">Área de pesquisa</h3>
+                                </div>
+                                <div class="col-3 align-right">
+                                    <ul class="blog-info-link">
+                                        <li>
+                                            <a href="" onclick="limpar_radio_buttons(); return false;">Limpar</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            {% for area_pesquisa in lista_areas_pesquisa %}
+                                <div class="switch-wrap d-flex justify-content-between">
+                                    <p>{{area_pesquisa.nome}}</p>
+                                    <div class="primary-radio">
+                                        <input type="radio" id="ap_{{area_pesquisa.id}}" name="areas_pesquisa" value="{{area_pesquisa}}"
+                                        {% if areas_pesquisa == area_pesquisa.nome %} checked {% endif %}>
+                                        <label for="ap_{{area_pesquisa.id}}"></label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <br>
+                            <input type="submit" class="btn btn-success" value="Filtrar">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 mb-5 mb-lg-0">
+                <div class="blog_right_sidebar">
+                    {% for projeto in lista_projetos %}
+                        <article class="blog_item">
+                            <div class="blog_item_img">
+                                <a href="{% url 'informacoes_projeto' pk=projeto.pk %}" class="blog_item_date">
+                                    <!-- <h3>{{projeto.data_inicio|date:'d F, Y'}}</h3> -->
+                                    <p>{{projeto.data_inicio|date:'d F, Y'}} - {{projeto.data_fim|date:'d F, Y'}}</p>
+                                </a>
+                            </div>
+                            <div class="blog_details">
+                                <h2 class="blog-head" style="color: #2d2d2d;">{{projeto.titulo}}</h2>
+                                {% if projeto.areas_pesquisa.all.count > 0 %}
+                                    <h4>
+                                        | 
+                                        {% for area_pesquisa in projeto.areas_pesquisa.all %}
+                                            {{area_pesquisa.nome}} |
+                                        {% endfor %}
+                                    </h4>
+                                {% endif %}
+                                <p>{{projeto.descricao|slice:":700"}}</p>
+                                <ul class="blog-info-link">
+                                    <li><i class="fa fa-user"></i> {{ projeto.participantes.count }}
+                                        {% if projeto.participantes.count == 1 %}
+                                            participante
+                                        {% else %}
+                                            participantes
+                                        {% endif %}
+                                    </li>
+                                    <!-- <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li> -->
+                                </ul>
+                            </div>
+                        </article>
+                    {% endfor %}
+                    <nav class="blog-pagination justify-content-center d-flex">
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a href="?{% url_replace request 'page' page_obj.previous_page_number %}" class="page-link" aria-label="Previous">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <a href="" class="page-link" aria-label="Previous">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% if page_obj.number|add:'-2' > 1 %}
+                                <li class="page-item">
+                                    <a href="?{% url_replace request 'page' page_obj.number|add:'-3' %}" class="page-link">&hellip;</a>
+                                </li>
+                            {% endif %}
+                    
+                            {% for i in page_obj.paginator.page_range %}
+                                {% if page_obj.number == i %}
+                                    <li class="active page-item">
+                                        <span class="page-link">{{ i }} <span class="sr-only">(current)</span></span>
+                                    </li>
+                                {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a href="?{% url_replace request 'page' i %}" class="page-link">{{ i }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                    
+                            {% if page_obj.paginator.num_pages > page_obj.number|add:'2' %}
+                                <li class="page-item">
+                                    <a href="?{% url_replace request 'page' page_obj.number|add:'3' %}" class="page-link">&hellip;</a>
+                                </li>
+                            {% endif %}
+                    
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a href="?{% url_replace request 'page' page_obj.next_page_number %}" class="page-link" aria-label="Next">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <a href="" class="page-link" aria-label="Next">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function limpar_radio_buttons() {
+        $('input[name=areas_pesquisa]').prop('checked',false);
+    }
+</script>
+
+{% endblock %}
