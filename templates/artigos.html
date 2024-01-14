@@ -98,7 +98,12 @@
                                         {{autor.nome}} |
                                     {% endfor %}
                                 </h4>
-                                <p>{{artigo.resumo}}</p>
+                                <p>{% if artigo.resumo is None %}
+                                    {{artigo.resumo|slice:":400"}}...
+                                    {% else %}
+                                    {{artigo.abstract|slice:":400"}}...
+                                    {% endif %}
+                                </p>
                                 <ul class="blog-info-link">
                                     <li><i class="fa fa-book"></i> {{artigo.publicacao}}</li>
                                     <li><a href="{{artigo.link}}"><i class="fa fa-link"></i> Link</a></li>

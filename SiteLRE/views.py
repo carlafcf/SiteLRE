@@ -77,7 +77,7 @@ class ListarProjetosFiltrados(generic.ListView):
     model = Projeto
     template_name = 'projetos.html'
     context_object_name = 'lista_projetos'
-    paginate_by = 2
+    paginate_by = 5
 
     def get_queryset(self):
         # qs = super().get_queryset()
@@ -103,7 +103,7 @@ class ListarArtigosFiltrados(generic.ListView):
     model = Artigo
     template_name = 'artigos.html'
     context_object_name = 'lista_artigos'
-    paginate_by = 2
+    paginate_by = 5
 
     def get_queryset(self):
         # qs = super().get_queryset()
@@ -134,7 +134,7 @@ def listar_artigos(request):
 
     page = request.GET.get('page', 1)
 
-    paginator = Paginator(lista_artigos, 2)
+    paginator = Paginator(lista_artigos, 5)
     try:
         page_object = paginator.page(page)
     except PageNotAnInteger:

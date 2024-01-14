@@ -17,6 +17,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
 
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'Artigo',
     'django_filters', #pip install django-filter
     'widget_tweaks', # pip install django-widget-tweaks
+    # pip install Pillow 
 ]
 
 MIDDLEWARE = [
@@ -131,6 +133,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MEDIA_URL = "/media/"
 
 
 # Default primary key field type

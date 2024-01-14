@@ -14,8 +14,8 @@ class Artigo (models.Model):
     publicacao = models.CharField(max_length=1000, null=False, blank=False, verbose_name="Publicação")
 
     palavras_chave = models.CharField(max_length=1000, null=False, blank=False, verbose_name="Palavras-chave")
-    resumo = models.TextField(null=False, blank=False, verbose_name="Resumo")
-    abstract = models.TextField(null=False, blank=False, verbose_name="Abstract")
+    resumo = models.TextField(verbose_name="Resumo")
+    abstract = models.TextField(verbose_name="Abstract")
 
     autores = models.ManyToManyField(Pesquisador)
 
@@ -25,5 +25,6 @@ class Artigo (models.Model):
     def __str__(self) -> str:
         return self.titulo
 
-    # class Meta:
-        # ordering
+    class Meta:
+        verbose_name = "Artigo"
+        verbose_name_plural = "Artigos"

@@ -1,4 +1,5 @@
 from django.db import models
+import PIL.Image
 
 TIPO_PESQUISADOR = [
     ('1', 'Professor'),
@@ -31,7 +32,7 @@ class Pesquisador (models.Model):
     contato = models.CharField(max_length=20, null=False, blank=False, verbose_name="Contato")
 
     genero = models.CharField(max_length=1, choices=GENERO, null=False, blank=False, verbose_name="Gênero")
-    titulacao = models.CharField(max_length=1, choices=TITULACAO, null=False, blank=False, verbose_name="Contato")
+    titulacao = models.CharField(max_length=1, choices=TITULACAO, null=False, blank=False, verbose_name="Titulação")
 
     instituicao = models.CharField(max_length=50, null=False, blank=False, verbose_name="Instituição")
     departamento = models.CharField(max_length=50, null=False, blank=False, verbose_name="Departamento")
@@ -41,10 +42,23 @@ class Pesquisador (models.Model):
     descricao_pesquisador = models.TextField(verbose_name="Descrição do pesquisador")
 
     ativo = models.BooleanField(default=True, null=False, blank=False, verbose_name="Ativo")
-    # foto
+    foto = models.ImageField(upload_to ='pesquisadores/fotos/', default='pesquisadores/fotos/default.png', null=True, blank=True) 
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        img = PIL.Image.open(self.foto)
+        width, height = img.size
+        target_width = 400
+        h_coefficient = width/400
+        target_height = height/h_coefficient
+        img = img.resize((int(target_width), int(target_height)), PIL.Image.Resampling.LANCZOS)
+        img.save(self.foto.path, quality=100)
+        img.close()
+        self.foto.close()
 
     def __str__(self) -> str:
         return self.nome
 
-    # class Meta:
-        # ordering
+    class Meta:
+        verbose_name = "Pesquisador"
+        verbose_name_plural = "Pesquisadores"
